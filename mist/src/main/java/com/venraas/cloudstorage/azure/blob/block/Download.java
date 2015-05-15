@@ -37,7 +37,7 @@ public class Download {
 	
 	public void start() {
 	   try {
-            CloudStorageAccount account = CloudStorageAccount.parse(StorageConnectionFormat);
+            CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
             CloudBlobClient serviceClient = account.createCloudBlobClient();            
 
             // Container name must be lower case.
