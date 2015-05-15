@@ -6,7 +6,6 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +22,13 @@ public class App
     {
         Options options = new Options();                
         
-//        Option fun = Option.builder("f")
-//        		.required()
-//        		.hasArg()
-//        		.argName("functionality")                
-//                .desc("specify functionality [upload|...]")
-//                .build();       
-//        
+        Option func = Option.builder("fn")
+        		.required()
+        		.hasArg()
+        		.argName("functionality")                
+                .desc("specify functionality [upload|download]")
+                .build();       
+        
 //        Option paasName = Option.builder("p")
 //        		.required()
 //                .hasArg()
@@ -58,16 +57,16 @@ public class App
                 .desc("the container name of the storage")
                 .build();
         
-        Option inputfile = Option.builder("inf")        		
+        Option inputfile = Option.builder("ffp")        		
                 .hasArg()
                 .required()
-                .argName("input file")
-                .desc("use given file as input")
+                .argName("full file name")
+                .desc("use given full file path")
                 .build();                       
         
         Option help = new Option("help", "print help message");
         
-//        options.addOption(fun);
+        options.addOption(func);
 //        options.addOption(paasName);
         options.addOption(accName);
         options.addOption(accName);
@@ -80,14 +79,23 @@ public class App
         	CommandLineParser parser = new DefaultParser();            // 
             CommandLine line = parser.parse(options, args);
             
-            if (line.hasOption("an") && line.hasOption("ak") && line.hasOption("c") && line.hasOption("inf")) {
+            if (line.hasOption("fn") && line.hasOption("an") && line.hasOption("ak") && line.hasOption("c") && line.hasOption("ffp")) {
+            	String fn = line.getOptionValue("fn");
             	String an = line.getOptionValue("an");
             	String ak = line.getOptionValue("ak");
             	String c = line.getOptionValue("c");
-            	String inf = line.getOptionValue("inf");
+            	String ffp = line.getOptionValue("ffp");
+            	
+            	if (0 == fn.compareToIgnoreCase("upload")) {            		
+            		Upload u = new Upload(an, ak, c, ffp);
+            		u.start();
+            	}
+            	else if (0 == fn.compareToIgnoreCase("download")) {
+            		Download d = new Download(an, ak, c, ffp);            		
+            		d.start();
+            	}            	            
             
-            	Upload u = new Upload(an, ak, c, inf);
-            	u.start();
+
             }
         }
         catch (org.apache.commons.cli.ParseException exp) {

@@ -143,23 +143,17 @@ public class Upload {
             //-- commit the blocks
             blob.commitBlockList(blockIDs);
             
-            long duration = System.currentTimeMillis() - startTime;                        		            		
-            logger.info(String.format("Upload to cloud storage completely in %d minutes", TimeUnit.MILLISECONDS.toSeconds(duration)));            
+            long duration = System.currentTimeMillis() - startTime;
+            logger.info(String.format("Upload to cloud storage completely in %d secs", TimeUnit.MILLISECONDS.toSeconds(duration)));            
         }
         catch (FileNotFoundException fileNotFoundException) {
-            System.out.print("FileNotFoundException encountered: ");
-            System.out.println(fileNotFoundException.getMessage());
-            System.exit(-1);
+        	logger.error( String.format("FileNotFoundException encountered: %s", fileNotFoundException.getMessage()) );                        
         }
         catch (StorageException storageException) {
-            System.out.print("StorageException encountered: ");
-            System.out.println(storageException.getMessage());
-            System.exit(-1);
+        	logger.error( String.format("StorageException encountered: %s", storageException.getMessage()) );                        
         }
         catch (Exception e) {
-            System.out.print("Exception encountered: ");
-            System.out.println(e.getMessage());
-            System.exit(-1);
+        	logger.error( String.format("Exception encountered: %s", e.getMessage()) );            
         }
         finally
         {
