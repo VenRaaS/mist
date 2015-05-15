@@ -47,13 +47,34 @@
 	          <manifest>
 	            <mainClass>com.venraas.cloudstorage.azure.blob.block.App</mainClass>
 	          </manifest>
-	        </archive>
-	        <descriptorRefs>
-	          <descriptorRef>jar-with-dependencies</descriptorRef>
-	        </descriptorRefs>
+	        </archive>	        
 	      </configuration>
+	      <executions>
+	      	<execution>
+          		<phase>package</phase>
+          		<goals>
+            		<goal>single</goal>
+          		</goals>
+          		<configuration>
+          		  <descriptorRefs>
+	                <descriptorRef>jar-with-dependencies</descriptorRef>
+	              </descriptorRefs>
+	              <finalName>${project.artifactId}-self-executing</finalName>
+          		  <appendAssemblyId>false</appendAssemblyId>
+          		</configuration>          		          		
+        	</execution>
+          </executions>	      
 	    </plugin>
   	</plugins>
+  	<resources>
+       <resource>
+         <directory>src/main/resources</directory>
+         <targetPath>${project.build.directory}</targetPath>
+         <includes>
+           <include>log4j.properties</include>
+         </includes>
+       </resource>
+    </resources>
   </build>
   
 </project>
