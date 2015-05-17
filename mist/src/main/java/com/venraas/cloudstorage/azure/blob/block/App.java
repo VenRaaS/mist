@@ -86,11 +86,11 @@ public class App
             	String c = line.getOptionValue("c");
             	String ffp = line.getOptionValue("ffp");
             	
-            	if (0 == fn.compareToIgnoreCase("upload")) {            		
+            	if (0 == fn.compareToIgnoreCase("up")) {            		
             		Upload u = new Upload(an, ak, c, ffp);
             		u.start();
             	}
-            	else if (0 == fn.compareToIgnoreCase("download")) {
+            	else if (0 == fn.compareToIgnoreCase("down")) {
             		Download d = new Download(an, ak, c, ffp);            		
             		d.start();
             	}            	            

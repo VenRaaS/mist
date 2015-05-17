@@ -98,7 +98,7 @@ public class Upload {
          
               //-- create a blockID from the block number, add it to the block ID list
               //   the block ID is a base64 string
-              String blkID = String.format("{%08d}", blockNumber);
+              String blkID = String.format("%08d", blockNumber);
               String blockId = Base64.encode(blkID.getBytes());
               blockIDs.add( new BlockEntry(blockId) );
               
@@ -126,9 +126,9 @@ public class Upload {
 	            for (FutureTask<Block> t : ft_list) {
 	            	if (t.isDone()) {
 	            		Block b = t.get();
-	            		if (b.uploaded && !uploadedBlock_set.contains(b.id)){	            			
+	            		if (b.uploaded && !uploadedBlock_set.contains(b.id_base64)){	            			
 	            			bytesUploaded += b.size;
-	            			uploadedBlock_set.add(b.id);
+	            			uploadedBlock_set.add(b.id_base64);
 	            			++uploadedBlock;	            			
 	            		}
 	            	}	            		            		            	            

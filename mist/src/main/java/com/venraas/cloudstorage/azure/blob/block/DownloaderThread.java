@@ -1,7 +1,5 @@
 package com.venraas.cloudstorage.azure.blob.block;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.concurrent.Callable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +7,13 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 
 
-public class UploaderThread implements Callable<Block> {	
-    final static Logger logger = LoggerFactory.getLogger(UploaderThread.class);
+public class DownloaderThread implements Callable<Block> {	
+    final static Logger logger = LoggerFactory.getLogger(DownloaderThread.class);
     
     private CloudBlockBlob blob_;
     private Block b_;        
     
-    public UploaderThread(CloudBlockBlob blob, Block b) {
+    public DownloaderThread(CloudBlockBlob blob, Block b) {
     	this.blob_ = blob;    	
     	this.b_ = b;    	       
     }
@@ -26,13 +24,15 @@ public class UploaderThread implements Callable<Block> {
 	}    
  
     private Block processCommand() {    	
-        try {        	
-        	blob_.uploadBlock(b_.id_base64, new ByteArrayInputStream(b_.bytes), b_.size);
-        	this.b_.uploaded = true;
+        try {
+        	byte[] buf = new byte[(int) b_.size];        	
+        	blob_.downloadRangeToByteArray(b_.offsetInCS, b_.size, buf, 0);
+        	b_.bytes = buf;
+        	b_.downloaded = true;        	
 //        	logger.info(String.format("Block: %s uploaded", this.blockID_));
         } catch (StorageException e) {			
         	logger.error(e.getMessage());        	
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());			
 		}
         
