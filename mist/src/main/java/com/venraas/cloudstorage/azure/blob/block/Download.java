@@ -108,9 +108,11 @@ public class Download {
 	            	            	            
 	            Thread.sleep(3000);
 	            
-	            logger.info( String.format("Download %.1f %%", (float)bytesDownloaded/(float)srcOffset*100) );	            
+//	            logger.info( String.format("Download %.1f %%", (float)bytesDownloaded/(float)srcOffset*100) );	            
+	            System.out.print( String.format("Download %.1f %% \r", (float)bytesDownloaded/(float)srcOffset*100) );
 	            if (downloadedBlock == blockNumber) break;	            
             }
+            System.out.println();
 
             FileOutputStream fos = new FileOutputStream(fullFilePath_);
             for (Block b : block_list) {

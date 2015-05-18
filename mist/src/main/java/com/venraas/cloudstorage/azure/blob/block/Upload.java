@@ -24,12 +24,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.core.Base64;
 
 
-public class Upload {	
-	
-	//-- block size unit in bytes 
-	final int BLOCK_SIZE_UNIT = 1024 * 1024;	
-	final float FACTOR_BLOCK_SIZE_UNIT = 0.5f;	
-    
+public class Upload {	   
     final static Logger logger = LoggerFactory.getLogger(Upload.class);
     
     String accName_; 
@@ -54,6 +49,8 @@ public class Upload {
         FileInputStream fileStream = null;
                 
         try {
+        	long startTime = System.currentTimeMillis();
+        	
         	//-- account
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
             CloudBlobClient serviceClient = account.createCloudBlobClient();
@@ -71,14 +68,12 @@ public class Upload {
             fileStream = new FileInputStream(fullFilePath_);
                  
             //-- set the upload block size 
-            int blockSize = (int)(FACTOR_BLOCK_SIZE_UNIT * BLOCK_SIZE_UNIT);            
+            int blockSize = (int)(Constants.FACTOR_BLOCK_SIZE_UNIT * Constants.BLOCK_SIZE_UNIT);            
             List<BlockEntry> blockIDs = new LinkedList<BlockEntry>();            
             List<FutureTask<Block>> ft_list = new LinkedList<FutureTask<Block>>();                                                           
             
             //-- thread pool
-            ExecutorService executor = Executors.newFixedThreadPool(Constants.SIZE_THREAD_POOL);                                            	        
-            
-            long startTime = System.currentTimeMillis();
+            ExecutorService executor = Executors.newFixedThreadPool(Constants.SIZE_THREAD_POOL);
             
             int blockNumber = 0;
             
@@ -130,9 +125,11 @@ public class Upload {
 	            	            	            
 	            Thread.sleep(3000);
 	            
-	            logger.info( String.format("Upload %.1f %%", (float)bytesUploaded/(float)fileSize*100) );	            
+	            System.out.print( String.format("Upload %.1f %% \r", (float)bytesUploaded/(float)fileSize*100) );
+//	            logger.info( String.format("Upload %.1f %%", (float)bytesUploaded/(float)fileSize*100) );	            
 	            if (uploadedBlock == blockNumber) break;	            
             }
+            System.out.println();
                                                                      
             //-- commit the blocks
             blob.commitBlockList(blockIDs);

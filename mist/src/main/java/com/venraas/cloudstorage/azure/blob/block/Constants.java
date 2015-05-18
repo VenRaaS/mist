@@ -8,6 +8,11 @@ public class Constants {
 			"DefaultEndpointsProtocol=http;"
 		    + "AccountName=%s;"
 		    + "AccountKey=%s";
+	
+	
+	//-- block size unit in bytes 
+	public final static int BLOCK_SIZE_UNIT = 1024 * 1024;	
+	public final static float FACTOR_BLOCK_SIZE_UNIT = 0.5f;	
 
 	
 }
