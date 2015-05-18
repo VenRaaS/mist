@@ -6,7 +6,7 @@ public class Block implements Comparable<Block> {
     
     public long id;
     
-    //-- offset in cloud storage
+    //-- the block offset in terms of cloud storage
     public long offsetInCS;
     
     public byte[] bytes;

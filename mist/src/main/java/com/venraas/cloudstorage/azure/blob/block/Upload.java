@@ -11,8 +11,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlockEntry;
@@ -26,15 +28,7 @@ public class Upload {
 	
 	//-- block size unit in bytes 
 	final int BLOCK_SIZE_UNIT = 1024 * 1024;	
-	final float FACTOR_BLOCK_SIZE_UNIT = 0.5f;
-	
-	//-- concurrent upload threads
-	final int SIZE_THREAD_POOL = 100; 		 
-	
-    final static String StorageConnectionFormat =
-		"DefaultEndpointsProtocol=http;"
-	    + "AccountName=%s;"
-	    + "AccountKey=%s";
+	final float FACTOR_BLOCK_SIZE_UNIT = 0.5f;	
     
     final static Logger logger = LoggerFactory.getLogger(Upload.class);
     
@@ -48,7 +42,7 @@ public class Upload {
 	public Upload (String an, String ak, String cn, String ffp) {
     	accName_ = an;
     	accKey_  = ak;    			        
-        storageConnection_str_ = String.format(StorageConnectionFormat, accName_, accKey_);        
+        storageConnection_str_ = String.format(Constants.STORAGE_CONNECTION_FORMAT, accName_, accKey_);        
         containerName_ = cn;        
         fullFilePath_ = ffp;
 	}
@@ -82,7 +76,7 @@ public class Upload {
             List<FutureTask<Block>> ft_list = new LinkedList<FutureTask<Block>>();                                                           
             
             //-- thread pool
-            ExecutorService executor = Executors.newFixedThreadPool(SIZE_THREAD_POOL);                                            	        
+            ExecutorService executor = Executors.newFixedThreadPool(Constants.SIZE_THREAD_POOL);                                            	        
             
             long startTime = System.currentTimeMillis();
             

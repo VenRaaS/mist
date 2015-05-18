@@ -25,14 +25,7 @@ import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import org.apache.commons.codec.binary.Base64;
 
 
-public class Download {
-	//-- concurrent threads
-	final int SIZE_THREAD_POOL = 100;
-	
-    final static String StorageConnectionFormat =
-		"DefaultEndpointsProtocol=http;"
-	    + "AccountName=%s;"
-	    + "AccountKey=%s";
+public class Download {    
     final static Logger logger = LoggerFactory.getLogger(Download.class);
     
     String accName_; 
@@ -45,7 +38,7 @@ public class Download {
 	public Download (String an, String ak, String cn, String ffp) {
     	accName_ = an;
     	accKey_  = ak;    			        
-        storageConnection_str_ = String.format(StorageConnectionFormat, accName_, accKey_);        
+        storageConnection_str_ = String.format(Constants.STORAGE_CONNECTION_FORMAT, accName_, accKey_);        
         containerName_ = cn;        
         fullFilePath_ = ffp;
 	}
@@ -66,8 +59,8 @@ public class Download {
         	String fname = file.getName();        	
             CloudBlockBlob blob = container.getBlockBlobReference(fname);                                                     
             
-            List<Block> block_list = new LinkedList<Block>();
             //-- get blocks profile
+            List<Block> block_list = new LinkedList<Block>();            
             List<BlockEntry> be_list = blob.downloadBlockList();                                                
             for (BlockEntry be : be_list) {
             	Block b = new Block();
@@ -81,12 +74,12 @@ public class Download {
             
             List<FutureTask<Block>> ft_list = new LinkedList<FutureTask<Block>>();
             //-- thread pool
-            ExecutorService executor = Executors.newFixedThreadPool(SIZE_THREAD_POOL);
+            ExecutorService executor = Executors.newFixedThreadPool(Constants.SIZE_THREAD_POOL);
             //-- sort by blockID with ascending order
             Collections.sort(block_list);            
             long srcOffset = 0;
             for (Block b : block_list) {
-                b.offsetInCS = b.size;                                
+                b.offsetInCS = srcOffset;                                
                 srcOffset += b.size;
                 
                 FutureTask<Block> t = new FutureTask<Block>(new DownloaderThread(blob, b));
@@ -101,33 +94,29 @@ public class Download {
                         
 //            while (! executor.isTerminated()) {
             int blockNumber = be_list.size();
-            while (downloadedBlock <= blockNumber) {            
+            while (downloadedBlock <= blockNumber) {
 	            for (FutureTask<Block> t : ft_list) {
 	            	if (t.isDone()) {
 	            		Block b = t.get();
-	            		if (b.downloaded && !downloadedBlock_set.contains(b.id_base64)){	            			
+	            		if (b.downloaded && !downloadedBlock_set.contains(b.id_base64)) {	            			
 	            			bytesDownloaded += b.size;
 	            			downloadedBlock_set.add(b.id_base64);
 	            			++downloadedBlock;	            			
 	            		}
-	            	}	            		            		            	            
+	            	}
 	            }
 	            	            	            
 	            Thread.sleep(3000);
 	            
-	            logger.info( String.format("Upload %.1f %%", (float)bytesDownloaded/(float)srcOffset*100) );	            
+	            logger.info( String.format("Download %.1f %%", (float)bytesDownloaded/(float)srcOffset*100) );	            
 	            if (downloadedBlock == blockNumber) break;	            
             }
 
             FileOutputStream fos = new FileOutputStream(fullFilePath_);
-            for (Block b : block_list) {             
+            for (Block b : block_list) {
             	fos.write(b.bytes);
             }
-            fos.close();                        
-            
-//            //-- Download the file.            
-//            File destinationFile = new File(file.getParentFile(), fname);
-//            blob.downloadToFile(destinationFile.getAbsolutePath());            
+            fos.close();
             
             long duration = System.currentTimeMillis() - startTime;
             logger.info(String.format("Download from cloud storage completely in %d secs", TimeUnit.MILLISECONDS.toSeconds(duration)));

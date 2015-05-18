@@ -29,7 +29,7 @@ public class DownloaderThread implements Callable<Block> {
         	blob_.downloadRangeToByteArray(b_.offsetInCS, b_.size, buf, 0);
         	b_.bytes = buf;
         	b_.downloaded = true;        	
-//        	logger.info(String.format("Block: %s uploaded", this.blockID_));
+//        	logger.info(String.format("Block: %s downloaded", this.blockID_));
         } catch (StorageException e) {			
         	logger.error(e.getMessage());        	
 		} catch (Exception e) {
