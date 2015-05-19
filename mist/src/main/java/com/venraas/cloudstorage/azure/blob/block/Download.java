@@ -39,11 +39,13 @@ public class Download {
         fullFilePath_ = ffp;
 	}
 	
-	public void start() {
-	   try {
-	        logger.info(String.format("start to download file: %s", fullFilePath_));  
-	        
-            CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
+	public boolean start() {
+		boolean rt = false;
+		
+		logger.info(String.format("start to download file: %s", fullFilePath_));
+		
+		try {
+			CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
             CloudBlobClient serviceClient = account.createCloudBlobClient();            
 
             logger.info("check container");
@@ -120,7 +122,9 @@ public class Download {
             fos.close();
             
             long duration = System.currentTimeMillis() - startTime;
-            logger.info(String.format("download from cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));            
+            logger.info(String.format("download from cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));
+            
+            rt = true;
         }
         catch (FileNotFoundException fileNotFoundException) {
         	logger.error( String.format("FileNotFoundException encountered: %s", fileNotFoundException.getMessage()) );        	
@@ -132,7 +136,7 @@ public class Download {
         	logger.error( String.format("Exception encountered: %s", e.getMessage()) );            
         }
 	    
-		
+		return rt;
 	}
 
 }

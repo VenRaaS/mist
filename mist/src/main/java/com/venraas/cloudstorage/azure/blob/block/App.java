@@ -2,6 +2,7 @@ package com.venraas.cloudstorage.azure.blob.block;
 
 import java.util.LinkedList;
 import java.util.List;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -22,6 +23,7 @@ public class App
 	
     public static void main( String [] args )
     {
+    	int rt = 1;
         Options options = new Options();
         
         Option func = Option.builder("fn")
@@ -118,21 +120,21 @@ public class App
             	else if (0 == fn.compareToIgnoreCase("up")) {            		
             		for (String fname : fname_list) {
             			Upload u = new Upload(connStr, c, fname);
-            			u.start();
+            			if (!u.start()) throw new RuntimeException(String.format("upload failed of file: %s", fname)); 
             		}
             	}
             	else if (0 == fn.compareToIgnoreCase("down")) {
             		for (String fname : fname_list) {
             			Download d = new Download(connStr, c, fname); 
-            			d.start();
+            			if (!d.start()) throw new RuntimeException(String.format("download failed of file: %s", fname));             			
             		}
             	}
             	else {
             		throw new org.apache.commons.cli.ParseException(String.format("unavailable -fn input \"%s\"", fn));            		
-            	}
-                        	
-
+            	}                        	
             }
+            
+            rt = 0;
         }
         catch (org.apache.commons.cli.ParseException exp) {
             //-- oops, something went wrong        	
@@ -141,5 +143,10 @@ public class App
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("mist", options, true);        			
 		}
+        catch (Exception e) {
+        	logger.error(e.getMessage());
+        }
+        
+        System.exit(rt);
     }
 }

@@ -38,7 +38,9 @@ public class Upload {
         fullFilePath_ = ffp;
 	}
 	
-	public void start() {		
+	public boolean start() {
+		boolean rt = false; 
+				
         logger.info(String.format("start to upload file: %s", fullFilePath_));        
         
         FileInputStream fileStream = null;
@@ -130,7 +132,9 @@ public class Upload {
             blob.commitBlockList(blockIDs);
             
             long duration = System.currentTimeMillis() - startTime;
-            logger.info(String.format("upload to cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));            
+            logger.info(String.format("upload to cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));
+            
+            rt = true;
         }
         catch (FileNotFoundException fileNotFoundException) {
         	logger.error( String.format("FileNotFoundException encountered: %s", fileNotFoundException.getMessage()) );                        
@@ -151,6 +155,8 @@ public class Upload {
 			}
         
         }
+        
+        return rt;
 	}
 	
 	
