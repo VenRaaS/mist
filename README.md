@@ -6,6 +6,7 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 * parallel **upload** with progress
 * parallel **download** with progress
 * simple file prefix pattern match include upload and download
+![](https://lh5.googleusercontent.com/TnDvg2N7Bs-YA87pX_3eP7bhmwZtJqYzsg-LySnMVjTnh8CDW5HxpqHi-01GJZ-FN4L28lsVDttWb44=w1576-h693)
 
 # Getting Started
 ## Usage
