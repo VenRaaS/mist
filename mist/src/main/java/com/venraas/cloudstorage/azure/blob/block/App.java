@@ -22,7 +22,7 @@ public class App
 	
     public static void main( String [] args )
     {
-        Options options = new Options();                
+        Options options = new Options();
         
         Option func = Option.builder("fn")
         		.required()
@@ -75,11 +75,20 @@ public class App
         options.addOption(accKey);
         options.addOption(container);
         options.addOption(inputfile);
-        options.addOption(help);                
-                
+        options.addOption(help);
+        
         try {
-        	CommandLineParser parser = new DefaultParser();            // 
-            CommandLine line = parser.parse(options, args);
+        	//-- print CLI help if -help 
+        	if (1 == args.length) {        		
+        		CommandLineParser parser = new DefaultParser();
+        		parser.parse(new Options().addOption(help), args);        		
+        		HelpFormatter formatter = new HelpFormatter();
+                formatter.printHelp("mist", options, true);
+                return;
+        	}
+        	        		
+        	CommandLineParser parser = new DefaultParser();
+        	CommandLine line = parser.parse(options, args);        	
             
             if (line.hasOption("fn") && line.hasOption("an") && line.hasOption("ak") && line.hasOption("c") && line.hasOption("ffp")) {
             	String fn = line.getOptionValue("fn");
@@ -130,7 +139,7 @@ public class App
         	logger.error("Parsing failed from org.apache.commons.cli");
         	logger.error("Reason: " + exp.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("mist", options );        			
+            formatter.printHelp("mist", options, true);        			
 		}
     }
 }

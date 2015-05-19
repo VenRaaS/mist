@@ -89,9 +89,11 @@ public class MiniGlob {
 			FileFilter fFilter = new PrefixFileFilter(fPrefix);
 
 			File[] files = dir.listFiles(fFilter);			
-			for (File f : files) {				
-				file_list_.add(path + f.getName());			
-				logger.info(path + f.getName());
+			for (File f : files) {
+				if (f.isFile()) {
+					file_list_.add(path + f.getName());
+					logger.info(path + f.getName());
+				}
 			}
 			
 		}
