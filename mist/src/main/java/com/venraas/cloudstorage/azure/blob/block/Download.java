@@ -27,33 +27,32 @@ import org.apache.commons.codec.binary.Base64;
 
 public class Download {    
     final static Logger logger = LoggerFactory.getLogger(Download.class);
-    
-    String accName_; 
-	String accKey_;    			
+        
     String storageConnection_str_;    
-    String containerName_;    
+    String containerName_;
     String fullFilePath_;
     
     
-	public Download (String an, String ak, String cn, String ffp) {
-    	accName_ = an;
-    	accKey_  = ak;    			        
-        storageConnection_str_ = String.format(Constants.STORAGE_CONNECTION_FORMAT, accName_, accKey_);        
-        containerName_ = cn;        
+	public Download (String connStr, String ctnName, String ffp) {    	    	    			        
+        storageConnection_str_ = connStr;        
+        containerName_ = ctnName;        
         fullFilePath_ = ffp;
 	}
 	
 	public void start() {
 	   try {
+	        logger.info(String.format("start to download file: %s", fullFilePath_));  
+	        
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
             CloudBlobClient serviceClient = account.createCloudBlobClient();            
 
+            logger.info("check container");
             // Container name must be lower case.
             CloudBlobContainer container = serviceClient.getContainerReference(containerName_);
             container.createIfNotExists();
 
             long startTime = System.currentTimeMillis();
-            logger.info("Download from cloud storage ...");
+            logger.info("download from cloud storage ...");
             
             File file = new File(fullFilePath_);        	
         	String fname = file.getName();        	
@@ -109,7 +108,7 @@ public class Download {
 	            Thread.sleep(3000);
 	            
 //	            logger.info( String.format("Download %.1f %%", (float)bytesDownloaded/(float)srcOffset*100) );	            
-	            System.out.print( String.format("Download %.1f %% \r", (float)bytesDownloaded/(float)srcOffset*100) );
+	            System.out.print( String.format("download %.1f %% \r", (float)bytesDownloaded/(float)srcOffset*100) );
 	            if (downloadedBlock == blockNumber) break;	            
             }
             System.out.println();
@@ -121,7 +120,7 @@ public class Download {
             fos.close();
             
             long duration = System.currentTimeMillis() - startTime;
-            logger.info(String.format("Download from cloud storage completely in %d secs", TimeUnit.MILLISECONDS.toSeconds(duration)));
+            logger.info(String.format("download from cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));            
         }
         catch (FileNotFoundException fileNotFoundException) {
         	logger.error( String.format("FileNotFoundException encountered: %s", fileNotFoundException.getMessage()) );        	

@@ -26,25 +26,20 @@ import com.microsoft.azure.storage.core.Base64;
 
 public class Upload {	   
     final static Logger logger = LoggerFactory.getLogger(Upload.class);
-    
-    String accName_; 
-	String accKey_;    			
+
     String storageConnection_str_;    
     String containerName_;    
     String fullFilePath_;    
-        
 
-	public Upload (String an, String ak, String cn, String ffp) {
-    	accName_ = an;
-    	accKey_  = ak;    			        
-        storageConnection_str_ = String.format(Constants.STORAGE_CONNECTION_FORMAT, accName_, accKey_);        
-        containerName_ = cn;        
+
+	public Upload (String connStr, String ctnName, String ffp) {    	    	    			       
+        storageConnection_str_ = connStr;        
+        containerName_ = ctnName;        
         fullFilePath_ = ffp;
 	}
 	
-	public void start() {
-		
-        logger.info("start to upload");
+	public void start() {		
+        logger.info(String.format("start to upload file: %s", fullFilePath_));        
         
         FileInputStream fileStream = null;
                 
@@ -55,7 +50,7 @@ public class Upload {
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnection_str_);
             CloudBlobClient serviceClient = account.createCloudBlobClient();
 
-            logger.info("prepare container in cloud");
+            logger.info("check container");
             //-- container name
             CloudBlobContainer container = serviceClient.getContainerReference(containerName_);
             container.createIfNotExists();            
@@ -98,7 +93,7 @@ public class Upload {
 
               //-- upload the block
               FutureTask<Block> t = new FutureTask<Block>(new UploaderThread(blob, b));
-              executor.execute(t);
+              executor.submit(t);
               ft_list.add(t);
 
               bytesLeft -= actuallReadSize;                            
@@ -109,7 +104,7 @@ public class Upload {
             int bytesUploaded = 0;
             int uploadedBlock = 0;
             
-            logger.info("Upload to cloud storage ...");
+            logger.info("upload to cloud storage ...");
 //            while (! executor.isTerminated()) {            
             while (uploadedBlock <= blockNumber) {            
 	            for (FutureTask<Block> t : ft_list) {
@@ -125,7 +120,7 @@ public class Upload {
 	            	            	            
 	            Thread.sleep(3000);
 	            
-	            System.out.print( String.format("Upload %.1f %% \r", (float)bytesUploaded/(float)fileSize*100) );
+	            System.out.print( String.format("upload %.1f %% \r", (float)bytesUploaded/(float)fileSize*100) );
 //	            logger.info( String.format("Upload %.1f %%", (float)bytesUploaded/(float)fileSize*100) );	            
 	            if (uploadedBlock == blockNumber) break;	            
             }
@@ -135,7 +130,7 @@ public class Upload {
             blob.commitBlockList(blockIDs);
             
             long duration = System.currentTimeMillis() - startTime;
-            logger.info(String.format("Upload to cloud storage completely in %d secs", TimeUnit.MILLISECONDS.toSeconds(duration)));            
+            logger.info(String.format("upload to cloud storage completely in %d secs \n", TimeUnit.MILLISECONDS.toSeconds(duration)));            
         }
         catch (FileNotFoundException fileNotFoundException) {
         	logger.error( String.format("FileNotFoundException encountered: %s", fileNotFoundException.getMessage()) );                        

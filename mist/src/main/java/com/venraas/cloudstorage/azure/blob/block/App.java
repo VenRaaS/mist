@@ -20,7 +20,7 @@ public class App
 {
 	final static Logger logger = LoggerFactory.getLogger(App.class);
 	
-    public static void main( String[] args )
+    public static void main( String [] args )
     {
         Options options = new Options();                
         
@@ -63,7 +63,7 @@ public class App
                 .hasArg()
                 .required()
                 .argName("full file name")
-                .desc("use given full file path")
+                .desc("use given full file path or full file prefix path for source (upload) or destination (download)")
                 .build();                       
         
         Option help = new Option("help", "print help message");
@@ -87,27 +87,34 @@ public class App
             	String ak = line.getOptionValue("ak");
             	String c = line.getOptionValue("c");
             	String ffp = line.getOptionValue("ffp");
-            	String connStr = String.format(Constants.STORAGE_CONNECTION_FORMAT, an, ak);
+            	ffp = ffp.trim();
+            	String connStr = String.format(Constants.STORAGE_CONNECTION_FORMAT, an, ak);            	
+//        		for (String s : args) logger.info(s);
             	
             	//-- prepare file list to process 
-            	List<String> fname_list = new LinkedList<String>();            	
-            	if ('*' == ffp.charAt(ffp.length() - 1) ) {
+            	List<String> fname_list = new LinkedList<String>();
+
+            	//-- check prefix-matched pattern files
+            	if (0 == "*".compareTo(ffp.substring(ffp.length() - 1)) ) {
             		MiniGlob glob = new MiniGlob(fn, connStr, c, ffp);
             		fname_list = glob.getFileList();
             	}
-            	else {
+            	else {            		
             		fname_list.add(ffp);
             	}
             	
-            	if (0 == fn.compareToIgnoreCase("up")) {
+            	if (0 == fname_list.size()) {
+            		logger.info("none of file to be processed");
+            	}            		
+            	else if (0 == fn.compareToIgnoreCase("up")) {            		
             		for (String fname : fname_list) {
-            			Upload u = new Upload(an, ak, c, fname);
+            			Upload u = new Upload(connStr, c, fname);
             			u.start();
             		}
             	}
             	else if (0 == fn.compareToIgnoreCase("down")) {
             		for (String fname : fname_list) {
-            			Download d = new Download(an, ak, c, fname); 
+            			Download d = new Download(connStr, c, fname); 
             			d.start();
             		}
             	}
