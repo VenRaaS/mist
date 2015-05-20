@@ -2,8 +2,7 @@
 Mist is a client tool takes charge of Upload/Download file Into/From PaaS storage, i.e. Azure storage, AWS S3 and Google cloud storage, efficiently with progress status.
 
 # Why
-It's highly cost-efficient 
-Instead of storing data in self-setup VM.
+It's highly cost-efficient that put data in PaaS storage instead of storing data in self-setup VM.
 
 ![](https://drive.google.com/uc?id=0B78KhWqVkVmtTkFmOXN4cEpka2s)
 
