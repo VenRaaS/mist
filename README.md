@@ -18,7 +18,7 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 
 ## Self-executing Jar
 ### Download
-[mist-self-executing.jar](https://github.com/VenRaaS/mist/blob/master/mist/target/mist-self-executing.jar)
+[mist-self-executing.jar](https://github.com/VenRaaS/mist/blob/master/mist/target/mist-self-executing.jar?raw=true)
 
 ### Build package with Maven 
 `mvn clean package`
