@@ -12,11 +12,13 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 ![](https://lh6.googleusercontent.com/whwRhs4x-YOfgJhiG8n-BRhiuK0lbK8eDTcIPAQc0j0CucQThWR11hlUYnXKPqmXnwzVD_rsV_A_Uys=w1573-h680)
 
 # Getting Started
-## Usage
-### Prequisite
+## Prequisite
 * JRE 1.7+
 * Available memory > 1.5 * $FileSize
+## Download
 
+
+## Usage
 ### Upload a single file from local to cloud
 ```
 java -jar mist-self-executing.jar -ak <account key> -an <account name> -c <container> -ffp recomdlog_20150115 -fn up
