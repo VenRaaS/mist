@@ -1,3 +1,9 @@
+# TOC
+* [Goal](#goal)
+* [Why](#why)
+* [Status](#status)
+* [Getting started](#getting-started)
+
 # Goal
 Mist is a client tool takes charge of Upload/Download file Into/From PaaS storage, i.e. Azure storage, AWS S3 and Google cloud storage, efficiently with progress status.
 
