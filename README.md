@@ -22,6 +22,7 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 
 ### Build package with Maven 
 `mvn clean package`
+* the Jar file will put under `mist\target`
 
 ## Usage
 ### Upload a single file from local to cloud
