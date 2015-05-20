@@ -34,7 +34,7 @@ java -jar mist-self-executing.jar -ak <account key> -an <account name> -c <conta
 java -jar mist-self-executing.jar -ak <account key> -an <account name> -c <container> -ffp recomdlog_20150115 -fn down
 ```
 ### Upload a bunch of files with a common prefix pattern
-* the pattern should be doulbe-quote **"** surrounded
+* the prefix pattern should be **doulbe-quote surrounded, e.g. "recomdlog_*"**
 ```
 java -jar mist-self-executing.jar -ak <account key> -an <account name> -c <container> -ffp "recomdlog_*" -fn up
 ```
