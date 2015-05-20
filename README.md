@@ -15,8 +15,9 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 ## Prequisite
 * JRE 1.7+
 * Available memory > 1.5 * $FileSize
-## Download
 
+## Download
+[mist-self-executing.jar](https://github.com/VenRaaS/mist/blob/master/mist/target/mist-self-executing.jar)
 
 ## Usage
 ### Upload a single file from local to cloud
