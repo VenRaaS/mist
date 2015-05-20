@@ -9,7 +9,7 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 
 ![](https://drive.google.com/uc?id=0B78KhWqVkVmtTkFmOXN4cEpka2s)
 
-![](https://lh6.googleusercontent.com/whwRhs4x-YOfgJhiG8n-BRhiuK0lbK8eDTcIPAQc0j0CucQThWR11hlUYnXKPqmXnwzVD_rsV_A_Uys=w1573-h680)
+![](https://drive.google.com/uc?id=0B78KhWqVkVmtVXFUOGdWbG1mcVk)
 
 # Getting Started
 ## Prequisite
