@@ -35,6 +35,7 @@ It's highly cost-efficient that put data in PaaS well-designed storage instead o
 * the Jar file will be generate under `mist\target`
 
 ## Usage
+* Notes: please specify `-Xmx${1.5 * $FileSIZE}` if OutOfMemoryError occurs.
 ### Upload a single file from local to cloud
 ```
 java -jar mist-self-executing.jar -ak <account key> -an <account name> -c <container> -ffp recomdlog_20150115 -fn up
