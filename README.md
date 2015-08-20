@@ -1,4 +1,4 @@
-# TOC
+### TOC
 * [Goal](#goal)
 * [Why](#why)
 * [Status](#status)
