@@ -12,8 +12,8 @@ Mist is a client tool takes charge of Upload/Download file Into/From PaaS storag
 # Why
 It's highly cost-efficient that put data in PaaS well-designed storage instead of storing data in self-setup VM.
 
-<img src="https://drive.google.com/uc?id=0B78KhWqVkVmtTkFmOXN4cEpka2s" width="300">
-<img src="https://drive.google.com/uc?id=0B78KhWqVkVmtVXFUOGdWbG1mcVk" width="300">
+<img src="https://drive.google.com/uc?id=0B78KhWqVkVmtTkFmOXN4cEpka2s" width="300">|<img src="https://drive.google.com/uc?id=0B78KhWqVkVmtVXFUOGdWbG1mcVk" width="300">
+---|---
 
 # Status
 ## Azure BLOB
