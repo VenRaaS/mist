@@ -6,6 +6,7 @@
 
 # Goal
 Mist is a client tool takes charge of Upload/Download file Into/From PaaS storage, i.e. Azure storage, AWS S3 and Google cloud storage, efficiently with progress status.
+
 ![](https://drive.google.com/uc?id=0B78KhWqVkVmtU0tJTGVHaHJTN0E)
 
 # Why
