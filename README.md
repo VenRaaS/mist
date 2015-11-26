@@ -20,6 +20,7 @@ It's highly cost-efficient that put data in PaaS well-designed storage instead o
 * parallel **upload** with progress
 * parallel **download** with progress
 * simple file prefix pattern match include upload and download
+![](https://drive.google.com/uc?id=0B78KhWqVkVmtblRaUnNUTC1HOFk)
 
 # Getting Started
 ## Prequisite
